@@ -1,0 +1,2388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statement of Work - HubSpot Migration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fff;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            font-size: 14px;
+        }
+        
+        /* Corporate Color Scheme */
+        :root {
+            --primary-blue: #1a365d;
+            --accent-blue: #2c5282;
+            --light-blue: #edf2f7;
+            --gray-dark: #4a5568;
+            --gray-medium: #718096;
+            --gray-light: #e2e8f0;
+            --border-color: #cbd5e0;
+            --phase-1: #4299e1;
+            --phase-2: #48bb78;
+            --phase-3: #ed8936;
+            --phase-4: #9f7aea;
+            --phase-5: #f56565;
+            --phase-6: #38b2ac;
+            --phase-7: #ed64a6;
+            --completed-green: #c6f6d5;
+            --completed-dark-green: #38a169;
+            --ahead-green: #48bb78;
+            --on-track-blue: #4299e1;
+            --delayed-red: #f56565;
+        }
+        
+        /* Header Styles */
+        .document-header {
+            border-bottom: 3px solid var(--primary-blue);
+            padding-bottom: 25px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .logo-placeholder {
+            height: 80px;
+            background-color: var(--light-blue);
+            border: 1px dashed var(--accent-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            font-weight: 600;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .document-title {
+            color: var(--primary-blue);
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .document-subtitle {
+            color: var(--accent-blue);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+        
+        .meta-info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .meta-info-table td {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--gray-light);
+            vertical-align: top;
+        }
+        
+        .meta-info-table td:first-child {
+            font-weight: 600;
+            width: 30%;
+            color: var(--primary-blue);
+        }
+        
+        /* Section Styles */
+        .section {
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+        
+        .section-title {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 12px 20px;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .subsection {
+            margin-bottom: 20px;
+        }
+        
+        .subsection-title {
+            color: var(--accent-blue);
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        /* Gantt Chart Styles - IMPROVED VISIBILITY */
+        .gantt-container {
+            margin: 30px 0;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+        
+        .gantt-header {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+        }
+        
+        .gantt-timeline {
+            display: flex;
+            background-color: var(--light-blue);
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .gantt-week {
+            flex: 1;
+            text-align: center;
+            padding: 10px 3px;
+            border-right: 1px solid var(--border-color);
+            font-weight: 700;
+            color: var(--gray-dark);
+            font-size: 11px;
+            min-width: 0;
+            overflow: hidden;
+        }
+        
+        .gantt-week:last-child {
+            border-right: none;
+        }
+        
+        .gantt-week.current {
+            background-color: #fff;
+            color: var(--primary-blue);
+            font-weight: 700;
+            border: 2px solid var(--accent-blue);
+            position: relative;
+            z-index: 2;
+            transform: scale(1.05);
+        }
+        
+        .gantt-phase-container {
+            padding: 15px 0;
+            background-color: #f9fafb;
+            position: relative;
+        }
+        
+        .gantt-phase-row {
+            display: flex;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .gantt-phase {
+            height: 36px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            color: white;
+            font-weight: 600;
+            padding: 0 12px;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 12px;
+            min-width: 80px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        /* Gantt chart phase completion effects */
+        .gantt-phase.completed-phase-bar {
+            background-image: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%, transparent);
+            background-size: 20px 20px;
+            border: 2px solid var(--completed-dark-green);
+            box-shadow: 0 2px 8px rgba(56, 161, 105, 0.3);
+        }
+        
+        .gantt-phase.completed-phase-bar .phase-name::after {
+            content: " ✓";
+            font-weight: bold;
+            margin-left: 5px;
+            font-size: 14px;
+        }
+        
+        .gantt-phase.phase-1 { background-color: var(--phase-1); }
+        .gantt-phase.phase-2 { background-color: var(--phase-2); }
+        .gantt-phase.phase-3 { background-color: var(--phase-3); }
+        .gantt-phase.phase-4 { background-color: var(--phase-4); }
+        .gantt-phase.phase-5 { background-color: var(--phase-5); }
+        .gantt-phase.phase-6 { background-color: var(--phase-6); }
+        .gantt-phase.phase-7 { background-color: var(--phase-7); }
+        
+        .phase-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        
+        .phase-name {
+            flex: 1;
+            font-weight: 700;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .phase-duration {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            margin-left: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .milestone-marker {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            background-color: white;
+            border-radius: 50%;
+            border: 2px solid #1a202c;
+            z-index: 10;
+            box-shadow: 0 0 0 2px white;
+        }
+        
+        .milestone-label {
+            position: absolute;
+            top: -22px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #1a202c;
+            white-space: nowrap;
+            background-color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            z-index: 5;
+        }
+        
+        .gantt-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--light-blue);
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            background-color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            margin-right: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+        }
+        
+        .legend-phase-num {
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-right: 3px;
+        }
+        
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 13px;
+        }
+        
+        .data-table th {
+            background-color: var(--primary-blue);
+            color: white;
+            text-align: left;
+            padding: 12px 15px;
+            font-weight: 600;
+        }
+        
+        .data-table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background-color: var(--light-blue);
+        }
+        
+        /* Timeline Table with Checkboxes and Comments */
+        .timeline-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 13px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .timeline-table th, .timeline-table td {
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        
+        .timeline-table th {
+            background-color: var(--primary-blue);
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+        
+        .timeline-table td:first-child {
+            text-align: center;
+            width: 50px;
+        }
+        
+        /* Completed Row Styling */
+        .timeline-table tr.completed-phase {
+            background-color: var(--completed-green) !important;
+            transition: background-color 0.3s ease;
+        }
+        
+        .timeline-table tr.completed-phase:hover {
+            background-color: #9ae6b4 !important;
+        }
+        
+        .timeline-table tr.completed-phase td {
+            border-color: #9ae6b4;
+        }
+        
+        /* Schedule Status Indicators */
+        .schedule-status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-left: 8px;
+            text-transform: uppercase;
+        }
+        
+        .schedule-ahead {
+            background-color: var(--ahead-green);
+            color: white;
+        }
+        
+        .schedule-ontrack {
+            background-color: var(--on-track-blue);
+            color: white;
+        }
+        
+        .schedule-delayed {
+            background-color: var(--delayed-red);
+            color: white;
+        }
+        
+        /* Checkbox Styling */
+        .phase-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--accent-blue);
+        }
+        
+        .phase-checkbox:checked {
+            background-color: var(--accent-blue);
+        }
+        
+        /* Enhanced Comment Field Styling */
+        .comment-container {
+            width: 100%;
+            min-width: 300px;
+            position: relative;
+        }
+        
+        .phase-comment {
+            width: 100%;
+            min-height: 80px;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 13px;
+            transition: all 0.2s ease;
+            background-color: #fff;
+            resize: vertical;
+            line-height: 1.5;
+        }
+        
+        .phase-comment:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(44, 82, 130, 0.1);
+        }
+        
+        .phase-comment:hover {
+            border-color: var(--accent-blue);
+        }
+        
+        .comment-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 5px;
+            font-size: 11px;
+            color: var(--gray-medium);
+        }
+        
+        .comment-info {
+            font-style: italic;
+        }
+        
+        .comment-actions {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .comment-action-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            border-radius: 3px;
+            padding: 2px 6px;
+            font-size: 11px;
+            cursor: pointer;
+            color: var(--gray-medium);
+            transition: all 0.2s;
+        }
+        
+        .comment-action-btn:hover {
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+        }
+        
+        .timestamp {
+            background-color: #f7fafc;
+            border-left: 3px solid var(--accent-blue);
+            padding: 6px 10px;
+            margin-top: 8px;
+            font-size: 11px;
+            color: var(--gray-dark);
+            border-radius: 0 4px 4px 0;
+            font-family: monospace;
+        }
+        
+        .timestamp i {
+            margin-right: 5px;
+            color: var(--accent-blue);
+        }
+        
+        .schedule-analysis {
+            background-color: #fffaf0;
+            border-left: 3px solid #ed8936;
+            padding: 8px 10px;
+            margin-top: 8px;
+            font-size: 11px;
+            color: var(--gray-dark);
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .schedule-analysis i {
+            margin-right: 5px;
+            color: #ed8936;
+        }
+        
+        .comment-save-indicator {
+            font-size: 10px;
+            color: #48bb78;
+            font-weight: 600;
+            margin-top: 3px;
+            display: none;
+        }
+        
+        /* Save Controls */
+        .save-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            padding: 15px;
+            background-color: var(--light-blue);
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .save-btn {
+            background-color: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: background-color 0.2s;
+        }
+        
+        .save-btn:hover {
+            background-color: #2b6cb0;
+        }
+        
+        .reset-btn {
+            background-color: #e53e3e;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: background-color 0.2s;
+        }
+        
+        .reset-btn:hover {
+            background-color: #c53030;
+        }
+        
+        .save-status {
+            margin-left: auto;
+            font-size: 13px;
+            color: var(--gray-medium);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        .save-status.saved {
+            color: #48bb78;
+        }
+        
+        .save-status.unsaved {
+            color: #ed8936;
+        }
+        
+        /* List Styles */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 5px;
+        }
+        
+        /* Footer and Approvals */
+        .approvals-section {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid var(--primary-blue);
+        }
+        
+        .approval-table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+        }
+        
+        .approval-table td {
+            padding: 20px;
+            width: 50%;
+            vertical-align: top;
+            border: 1px solid var(--border-color);
+        }
+        
+        .approval-header {
+            background-color: var(--light-blue);
+            padding: 12px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .signature-line {
+            margin-top: 80px;
+            border-top: 1px solid #333;
+            width: 80%;
+        }
+        
+        /* Print-specific styles */
+        @media print {
+            body {
+                font-size: 12px;
+                padding: 10px;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+            }
+            
+            .document-title {
+                font-size: 24px;
+            }
+            
+            .logo-placeholder {
+                border: 1px solid #ccc;
+            }
+            
+            .no-print {
+                display: none;
+            }
+            
+            .gantt-phase {
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            }
+            
+            .legend-item {
+                page-break-inside: avoid;
+            }
+            
+            .save-controls, .phase-comment, .phase-checkbox, .comment-toolbar, .timestamp, .schedule-analysis {
+                display: none;
+            }
+            
+            .timeline-table th:last-child, .timeline-table td:last-child {
+                display: none;
+            }
+            
+            .timeline-table tr.completed-phase {
+                background-color: #e6ffed !important;
+            }
+        }
+        
+        /* Interactive elements for screen viewing */
+        .page-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .print-btn {
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            display: block;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        
+        .print-btn:hover {
+            background-color: var(--accent-blue);
+        }
+        
+        .instructions {
+            font-size: 12px;
+            color: var(--gray-medium);
+            text-align: center;
+            margin-top: 5px;
+        }
+        
+        /* Content Styling */
+        .content {
+            margin-top: 20px;
+        }
+        
+        p {
+            margin-bottom: 12px;
+        }
+        
+        .highlight {
+            background-color: #fffacd;
+            padding: 2px 5px;
+            border-radius: 2px;
+        }
+        
+        /* Date Display */
+        .project-dates {
+            background-color: var(--light-blue);
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-left: 4px solid var(--accent-blue);
+        }
+        
+        .date-info {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .date-item {
+            margin: 5px 0;
+        }
+        
+        .date-label {
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+        
+        /* Week numbers on Gantt */
+        .week-number {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 2px;
+        }
+        
+        /* Gantt grid lines */
+        .gantt-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            pointer-events: none;
+        }
+        
+        .gantt-grid-cell {
+            flex: 1;
+            border-right: 1px dashed rgba(0, 0, 0, 0.1);
+            height: 100%;
+        }
+        
+        /* Improved milestone visibility */
+        .milestone-diamond {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            width: 12px;
+            height: 12px;
+            background-color: #fff;
+            border: 2px solid #1a202c;
+            z-index: 10;
+        }
+        
+        .milestone-diamond-label {
+            position: absolute;
+            top: -25px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #1a202c;
+            white-space: nowrap;
+            background-color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            border: 1px solid var(--border-color);
+            z-index: 5;
+            transform: translateX(-50%);
+            left: 50%;
+        }
+        
+        .gantt-phase-tooltip {
+            display: none;
+            position: absolute;
+            background: white;
+            border: 2px solid var(--primary-blue);
+            border-radius: 6px;
+            padding: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            font-size: 12px;
+            max-width: 250px;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* Completion status indicator */
+        .completion-stats {
+            background-color: var(--light-blue);
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .stats-item {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .stats-value {
+            color: var(--primary-blue);
+            font-weight: 700;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #48bb78;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        /* Project Schedule Analysis */
+        .schedule-analysis-panel {
+            background-color: #f7fafc;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border: 1px solid var(--border-color);
+        }
+        
+        .schedule-analysis-title {
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .schedule-analysis-title i {
+            margin-right: 8px;
+        }
+        
+        .schedule-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .metric-card {
+            background-color: white;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .metric-title {
+            font-size: 12px;
+            color: var(--gray-medium);
+            margin-bottom: 5px;
+        }
+        
+        .metric-value {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .metric-value.ahead {
+            color: var(--ahead-green);
+        }
+        
+        .metric-value.ontrack {
+            color: var(--on-track-blue);
+        }
+        
+        .metric-value.delayed {
+            color: var(--delayed-red);
+        }
+        
+        .metric-detail {
+            font-size: 11px;
+            color: var(--gray-medium);
+        }
+        
+        /* Stakeholder comment styling */
+        .stakeholder-entry {
+            background-color: #f8fafc;
+            border-left: 3px solid var(--accent-blue);
+            padding: 8px 10px;
+            margin-bottom: 8px;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .stakeholder-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--gray-medium);
+            margin-bottom: 3px;
+        }
+        
+        .stakeholder-name {
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+        
+        .stakeholder-date {
+            font-family: monospace;
+        }
+        
+        .stakeholder-text {
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        
+        /* Add stakeholder form */
+        .add-stakeholder-form {
+            background-color: #fff;
+            border: 1px dashed var(--border-color);
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .form-input {
+            flex: 1;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+        
+        .form-textarea {
+            width: 100%;
+            min-height: 60px;
+            padding: 8px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: 'Open Sans', sans-serif;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        /* Highlight for today */
+        .today-marker {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #e53e3e;
+            z-index: 5;
+        }
+        
+        .today-label {
+            position: absolute;
+            top: -20px;
+            background-color: #e53e3e;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 700;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <!-- Print Controls (Only visible on screen) -->
+    <div class="page-controls no-print">
+        <button class="print-btn" onclick="window.print()">Print to PDF</button>
+        <button class="save-btn" onclick="saveAllData()">Save All Changes</button>
+        <button class="reset-btn" onclick="resetAllData()">Reset All</button>
+        <div class="instructions">
+            Project Start: Jan 19, 2026<br>
+            Duration: 11 Weeks
+        </div>
+        <div id="save-status" class="save-status">Auto-save enabled</div>
+    </div>
+    
+    <!-- Document Header -->
+    <div class="document-header">
+       
+        
+        <h1 class="document-title">STATEMENT OF WORK</h1>
+        
+        <div class="document-subtitle">
+            Project: ERM System Integration & Migration<br>
+            From: Nutshell CRM | To: HubSpot CRM Platform
+        </div>
+        
+        <table class="meta-info-table">
+            <tr>
+                <td>Client:</td>
+                <td>The Retirement Advantage Inc. (TRA)</td>
+            </tr>
+            <tr>
+                <td>Prepared For:</td>
+                <td>Information Technology Department</td>
+            </tr>
+            <tr>
+                <td>Version:</td>
+                <td>3.0</td>
+            </tr>
+            <tr>
+                <td>Date:</td>
+                <td id="current-date">[Current Date]</td>
+            </tr>
+        </table>
+    </div>
+    
+    <!-- Document Content -->
+    <div class="content">
+        <!-- Section 1 -->
+        <div class="section">
+            <div class="section-title">1. EXECUTIVE SUMMARY</div>
+            <p>This Statement of Work (SOW) formally outlines the scope, deliverables, timeline, and responsibilities for the migration of the ERM system's integration from the Nutshell CRM platform to the HubSpot CRM platform. The objective of this engagement is to ensure a seamless transition with zero disruption to critical billing operations, while leveraging HubSpot's enhanced capabilities to improve data integrity, reporting accuracy, and system performance. The proposed approach is methodical, phased, and designed to mitigate risk through comprehensive analysis, robust development, and rigorous testing.</p>
+            <p><strong>Updated Timeline:</strong> The project will commence on <strong>January 19, 2026</strong> and run for 11 weeks to provide additional buffer for complex API integration and ensure higher quality deliverables through separation of database updates from application code updates, with explicit development of the data pull mechanism.</p>
+            <p><strong>Enhanced Tracking:</strong> This document includes advanced project tracking features with visual completion indicators, automatic timestamping, schedule analysis, and collaborative comment functionality for multiple stakeholders.</p>
+        </div>
+        
+        <!-- Section 2 -->
+        <div class="section">
+            <div class="section-title">2. PROJECT OBJECTIVES & GOALS</div>
+            <p>The primary goals of this migration project are as follows:</p>
+            <ul>
+                <li><span class="highlight">Seamless Transition:</span> Maintain full functionality of the ERM system throughout the migration lifecycle.</li>
+                <li><span class="highlight">Complete Data Integrity:</span> Ensure accurate and complete migration of all historical and transactional data from Nutshell to HubSpot.</li>
+                <li><span class="highlight">Functional Parity & Enhancement:</span> Re-establish all existing integration features within the HubSpot ecosystem and identify opportunities for optimization.</li>
+                <li><span class="highlight">Robust Data Pull Mechanism:</span> Develop a reliable, maintainable data extraction system from HubSpot to the ERM system.</li>
+                <li><span class="highlight">Reporting Continuity:</span> Update all dependent reporting structures within the Enterprise Resource Management (ERM) system to source data flawlessly from HubSpot.</li>
+                <li><span class="highlight">Future-Readiness:</span> Deliver a stable, documented, and supportable integration foundation on the HubSpot platform.</li>
+            </ul>
+        </div>
+        
+        <!-- Section 3 - UPDATED FOR 11 WEEKS -->
+        <div class="section">
+            <div class="section-title">3. SCOPE OF WORK (11-Week Timeline)</div>
+            <p>The project will be executed across the following <strong>7 phases over 11 weeks</strong>, each containing specific tasks and deliverables.</p>
+            
+            <div class="subsection">
+                <div class="subsection-title">PHASE 1: DISCOVERY & STRATEGIC PLANNING (2 Weeks)</div>
+                <ul>
+                    <li><strong>1.1 Requirements Gathering:</strong> Conduct workshops to document current Nutshell integration workflows, data points, and business rules.</li>
+                    <li><strong>1.2 Gap Analysis:</strong> Perform a detailed comparative analysis between Nutshell and HubSpot APIs, data models, and functionality to identify gaps and solutions.</li>
+                    <li><strong>1.3 Migration Strategy Formulation:</strong> Develop a comprehensive plan addressing data mapping, migration approach (big bang vs. phased), risk mitigation, and rollback procedures.</li>
+                </ul>
+                <p><strong>Deliverables:</strong> Requirements Specification Document, Gap Analysis Report, Approved Project Migration Strategy.</p>
+            </div>
+            
+            <div class="subsection">
+                <div class="subsection-title">PHASE 2: INTEGRATION DESIGN & API MAPPING (1 Week)</div>
+                <ul>
+                    <li><strong>2.1 Technical Design Specification:</strong> Create detailed design documents for the new HubSpot integration, including data flow diagrams and sequence diagrams.</li>
+                    <li><strong>2.2 API Endpoint Mapping:</strong> Systematically map all legacy Nutshell API calls, objects (Contacts, Companies, Invoices, Notes), and fields to their HubSpot equivalents.</li>
+                    <li><strong>2.3 Synchronization Logic Design:</strong> Design the logic for ongoing bidirectional or unidirectional data synchronization between the ERM system and HubSpot.</li>
+                </ul>
+                <p><strong>Deliverables:</strong> Technical Design Specification Document, API Mapping Matrix.</p>
+            </div>
+            
+            <div class="subsection">
+                <div class="subsection-title">PHASE 3: HISTORICAL DATA MIGRATION (2 Weeks)</div>
+                <ul>
+                    <li><strong>3.1 Extraction & Transformation:</strong> Develop and execute scripts to extract historical data from Nutshell, followed by cleansing and transformation to align with HubSpot's data schema.</li>
+                    <li><strong>3.2 Validation & Load:</strong> Implement a staged migration process, loading transformed data into HubSpot via its API, with pre- and post-load validation checks for accuracy and completeness.</li>
+                    <li><strong>3.3 Data Reconciliation:</strong> Perform a record-by-record reconciliation between source (Nutshell) and target (HubSpot) systems to ensure data fidelity.</li>
+                </ul>
+                <p><strong>Deliverables:</strong> Migrated Data Set in HubSpot, Data Migration Logs, Data Reconciliation Report.</p>
+            </div>
+            
+            <div class="subsection">
+                <div class="subsection-title">PHASE 4: INTEGRATION BUILD (1 Week)</div>
+                <ul>
+                    <li><strong>4.1 Core Integration Build:</strong> Develop and configure the new integration modules within the ERM system codebase to interact with HubSpot's APIs for all critical operations (create, read, update).</li>
+                    <li><strong>4.2 Legacy Code Decommissioning:</strong> Remove or deactivate all Nutshell-specific API calls and dependencies from the production codebase.</li>
+                    <li><strong>4.3 Logging & Monitoring:</strong> Implement comprehensive logging, error handling, and alerting mechanisms for the new integration.</li>
+                </ul>
+                <p><strong>Deliverables:</strong> Updated Codebase in Development Environment, Integration Module Documentation.</p>
+            </div>
+            
+            <div class="subsection">
+                <div class="subsection-title">PHASE 5: DATABASE & REPORTING UPDATES (2 Weeks)</div>
+                <ul>
+                    <li><strong>5.1 Database Object Refactoring:</strong> Update all relevant SQL Server Stored Procedures (SPs), Views, and functions to source data from the new HubSpot-linked tables or API endpoints.</li>
+                    <li><strong>5.2 Report Validation:</strong> Validate that all financial, operational, and client reports generate accurately using the new data source.</li>
+                    <li><strong>5.3 Performance Optimization:</strong> Optimize database queries and indexing for the new HubSpot integration patterns.</li>
+                </ul>
+                <p><strong>Deliverables:</strong> Updated SQL Scripts, Validated Reports, Database Performance Report.</p>
+            </div>
+            
+            <div class="subsection">
+                <div class="subsection-title">PHASE 6: ERM APPLICATION INTEGRATION & DATA PULL MECHANISM (2 Weeks)</div>
+                <ul>
+                    <li><strong>6.1 ERM Feature Updates:</strong> Modify the Enterprise Resource Management (ERM) application code to ensure all features previously dependent on Nutshell data are fully compatible with HubSpot.</li>
+                    <li><strong>6.2 Data Pull Mechanism Development:</strong> Build robust data extraction components to pull data from HubSpot into the ERM system, including error handling, retry logic, and data validation.</li>
+                    <li><strong>6.3 Integration Testing:</strong> Test the complete data flow between HubSpot and the ERM application, including edge cases and error scenarios.</li>
+                </ul>
+                <p><strong>Deliverables:</strong> Updated ERM Application Code, Data Pull Component Documentation, Integration Test Results.</p>
+            </div>
+            
+            <div class="subsection">
+                <div class="subsection-title">PHASE 7: QUALITY ASSURANCE & DEPLOYMENT (1 Week)</div>
+                <ul>
+                    <li><strong>7.1 System Integration Testing (SIT):</strong> Execute end-to-end tests of all integration scenarios, including data sync, invoice generation, and error conditions.</li>
+                    <li><strong>7.2 User Acceptance Testing (UAT) Support:</strong> Facilitate client-led UAT, providing test environments and resolving identified issues.</li>
+                    <li><strong>7.3 Production Deployment:</strong> Execute the approved deployment plan to move the updated integration and codebase to the production environment.</li>
+                    <li><strong>7.4 Post-Deployment Verification:</strong> Conduct smoke tests in production to confirm all systems are operating as intended.</li>
+                </ul>
+                <p><strong>Deliverables:</strong> Test Plan & Results, UAT Sign-off, Deployment Runbook, Production System Verification Report.</p>
+            </div>
+        </div>
+        
+        <!-- Section 4 - UPDATED GANTT CHART -->
+        <div class="section">
+            <div class="section-title">4. PROJECT TIMELINE & MILESTONES</div>
+            <p>The project will commence on <strong>January 19, 2026</strong> and run for <strong>11 weeks</strong>. Below is the detailed project schedule with key milestones:</p>
+            
+            <!-- Project Dates Summary -->
+            <div class="project-dates">
+                <div class="date-info">
+                    <div class="date-item">
+                        <span class="date-label">Project Start:</span> January 19, 2026
+                    </div>
+                    <div class="date-item">
+                        <span class="date-label">Project End:</span> April 7, 2026
+                    </div>
+                    <div class="date-item">
+                        <span class="date-label">Duration:</span> 11 weeks (77 calendar days)
+                    </div>
+                    <div class="date-item">
+                        <span class="date-label">Working Days:</span> 55 days (excluding weekends)
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Enhanced Gantt Chart -->
+            <div class="gantt-container">
+                <div class="gantt-header">
+                    <span>PROJECT GANTT CHART - 11 Week Timeline</span>
+                    <span style="font-size: 12px; font-weight: 400;">Timeline: Jan 19 - Apr 7, 2026</span>
+                </div>
+                
+                <!-- Timeline Weeks -->
+                <div class="gantt-timeline" id="gantt-weeks">
+                    <!-- Weeks will be generated by JavaScript -->
+                </div>
+                
+                <!-- Today Marker -->
+                <div id="today-marker" class="today-marker no-print" style="display: none;"></div>
+                <div id="today-label" class="today-label no-print" style="display: none;">Today</div>
+                
+                <!-- Gantt Grid for reference -->
+                <div class="gantt-grid" id="gantt-grid">
+                    <!-- Grid cells generated by JavaScript -->
+                </div>
+                
+                <!-- Phases Container -->
+                <div class="gantt-phase-container">
+                    <!-- Phase 1: Discovery & Planning (Weeks 1-2) -->
+                    <div class="gantt-phase-row">
+                        <div class="gantt-phase phase-1" id="gantt-phase-1" style="width: 18.18%;" data-phase="1" data-week-start="1" data-week-end="2">
+                            <div class="phase-label">
+                                <span class="phase-name">Phase 1: Discovery</span>
+                                <span class="phase-duration">2w</span>
+                            </div>
+                            <div class="milestone-diamond" style="right: 0;"></div>
+                            <div class="milestone-diamond-label" style="right: 0; transform: translateX(50%);">Strategy Approval</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Phase 2: Integration Design (Week 3) -->
+                    <div class="gantt-phase-row">
+                        <div class="gantt-phase phase-2" id="gantt-phase-2" style="width: 9.09%; margin-left: 18.18%;" data-phase="2" data-week-start="3" data-week-end="3">
+                            <div class="phase-label">
+                                <span class="phase-name">Phase 2: Design</span>
+                                <span class="phase-duration">1w</span>
+                            </div>
+                            <div class="milestone-diamond" style="right: 0;"></div>
+                            <div class="milestone-diamond-label" style="right: 0; transform: translateX(50%);">Design Sign-off</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Phase 3: Data Migration (Weeks 4-5) -->
+                    <div class="gantt-phase-row">
+                        <div class="gantt-phase phase-3" id="gantt-phase-3" style="width: 18.18%; margin-left: 27.27%;" data-phase="3" data-week-start="4" data-week-end="5">
+                            <div class="phase-label">
+                                <span class="phase-name">Phase 3: Data Migration</span>
+                                <span class="phase-duration">2w</span>
+                            </div>
+                            <div class="milestone-diamond" style="right: 0;"></div>
+                            <div class="milestone-diamond-label" style="right: 0; transform: translateX(50%);">Data Recon Complete</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Phase 4: Integration Build (Week 6) -->
+                    <div class="gantt-phase-row">
+                        <div class="gantt-phase phase-4" id="gantt-phase-4" style="width: 9.09%; margin-left: 45.45%;" data-phase="4" data-week-start="6" data-week-end="6">
+                            <div class="phase-label">
+                                <span class="phase-name">Phase 4: Build</span>
+                                <span class="phase-duration">1w</span>
+                            </div>
+                            <div class="milestone-diamond" style="right: 0;"></div>
+                            <div class="milestone-diamond-label" style="right: 0; transform: translateX(50%);">Code Complete</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Phase 5: Database & Reporting (Weeks 7-8) -->
+                    <div class="gantt-phase-row">
+                        <div class="gantt-phase phase-5" id="gantt-phase-5" style="width: 18.18%; margin-left: 54.54%;" data-phase="5" data-week-start="7" data-week-end="8">
+                            <div class="phase-label">
+                                <span class="phase-name">Phase 5: DB & Reporting</span>
+                                <span class="phase-duration">2w</span>
+                            </div>
+                            <div class="milestone-diamond" style="right: 0;"></div>
+                            <div class="milestone-diamond-label" style="right: 0; transform: translateX(50%);">Reports Validated</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Phase 6: ERM & Data Pull (Weeks 9-10) -->
+                    <div class="gantt-phase-row">
+                        <div class="gantt-phase phase-6" id="gantt-phase-6" style="width: 18.18%; margin-left: 72.72%;" data-phase="6" data-week-start="9" data-week-end="10">
+                            <div class="phase-label">
+                                <span class="phase-name">Phase 6: ERM & Data Pull</span>
+                                <span class="phase-duration">2w</span>
+                            </div>
+                            <div class="milestone-diamond" style="right: 0;"></div>
+                            <div class="milestone-diamond-label" style="right: 0; transform: translateX(50%);">Integration Complete</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Phase 7: QA & Deployment (Week 11) -->
+                    <div class="gantt-phase-row">
+                        <div class="gantt-phase phase-7" id="gantt-phase-7" style="width: 9.09%; margin-left: 90.91%;" data-phase="7" data-week-start="11" data-week-end="11">
+                            <div class="phase-label">
+                                <span class="phase-name">Phase 7: QA & Deployment</span>
+                                <span class="phase-duration">1w</span>
+                            </div>
+                            <div class="milestone-diamond" style="right: 0;"></div>
+                            <div class="milestone-diamond-label" style="right: 0; transform: translateX(50%);">Go-Live</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Enhanced Gantt Chart Legend -->
+            <div class="gantt-legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--phase-1);"></div>
+                    <span><span class="legend-phase-num">Phase 1:</span> Discovery & Planning</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--phase-2);"></div>
+                    <span><span class="legend-phase-num">Phase 2:</span> Integration Design</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--phase-3);"></div>
+                    <span><span class="legend-phase-num">Phase 3:</span> Data Migration</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--phase-4);"></div>
+                    <span><span class="legend-phase-num">Phase 4:</span> Integration Build</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--phase-5);"></div>
+                    <span><span class="legend-phase-num">Phase 5:</span> Database & Reporting</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--phase-6);"></div>
+                    <span><span class="legend-phase-num">Phase 6:</span> ERM & Data Pull</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--phase-7);"></div>
+                    <span><span class="legend-phase-num">Phase 7:</span> QA & Deployment</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--completed-green); border: 1px solid #9ae6b4;"></div>
+                    <span>Completed Row</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: repeating-linear-gradient(45deg, var(--completed-dark-green), var(--completed-dark-green) 10px, #48bb78 10px, #48bb78 20px);"></div>
+                    <span>Completed Gantt Bar</span>
+                </div>
+            </div>
+            
+            <!-- Schedule Analysis Panel -->
+            <div class="schedule-analysis-panel no-print">
+                <div class="schedule-analysis-title">
+                    <i class="fas fa-chart-line"></i> Project Schedule Analysis
+                </div>
+                <div class="schedule-metrics">
+                    <div class="metric-card">
+                        <div class="metric-title">Overall Project Status</div>
+                        <div id="overall-status" class="metric-value ontrack">On Track</div>
+                        <div id="overall-detail" class="metric-detail">Based on completed phases vs. planned dates</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Completed Phases</div>
+                        <div id="completed-phases-count" class="metric-value">0/7</div>
+                        <div id="completed-phases-detail" class="metric-detail">0% of total phases</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Ahead of Schedule</div>
+                        <div id="ahead-count" class="metric-value ahead">0</div>
+                        <div class="metric-detail">phases completed early</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Delayed Phases</div>
+                        <div id="delayed-count" class="metric-value delayed">0</div>
+                        <div class="metric-detail">phases behind schedule</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Completion Statistics -->
+            <div class="completion-stats no-print">
+                <div class="stats-item">
+                    <span>Completed: </span>
+                    <span id="completed-count" class="stats-value">0</span>
+                    <span> / 7 phases</span>
+                </div>
+                <div class="stats-item">
+                    <span>Progress: </span>
+                    <span id="progress-percentage" class="stats-value">0%</span>
+                </div>
+                <div class="stats-item">
+                    <span>Remaining: </span>
+                    <span id="remaining-count" class="stats-value">7</span>
+                    <span> phases</span>
+                </div>
+            </div>
+            <div class="progress-bar no-print">
+                <div id="progress-fill" class="progress-fill"></div>
+            </div>
+            
+            <!-- Save Controls -->
+            <div class="save-controls no-print">
+                <button class="save-btn" onclick="saveAllData()">Save All Changes</button>
+                <button class="reset-btn" onclick="resetAllData()">Reset All Data</button>
+                <div id="save-status-bar" class="save-status">Data will auto-save as you type</div>
+            </div>
+            
+            <!-- Timeline Table with Checkboxes and Comments -->
+            <table class="timeline-table">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Phase</th>
+                        <th>Description</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Duration</th>
+                        <th>Key Milestone</th>
+                        <th>Comments & Notes</th>
+                    </tr>
+                </thead>
+                <tbody id="timeline-body">
+                    <!-- Timeline rows will be generated by JavaScript -->
+                </tbody>
+            </table>
+            
+            <p><strong>Total Project Duration:</strong> 11 Weeks (January 19 - April 7, 2026)</p>
+            <p><strong>Note:</strong> The timeline includes an additional week to ensure robust development of the data pull mechanism and separation of database updates from application code updates, providing better quality assurance and reducing deployment risks.</p>
+            <p class="no-print"><strong>Interactive Features:</strong> 
+                <ul class="no-print">
+                    <li><strong>Visual Tracking:</strong> Checkboxes turn rows green and Gantt bars get a completion pattern.</li>
+                    <li><strong>Auto-timestamping:</strong> Completion dates are automatically recorded when phases are marked complete.</li>
+                    <li><strong>Schedule Analysis:</strong> System compares actual completion dates with planned dates to show ahead/delayed status.</li>
+                    <li><strong>Collaborative Comments:</strong> Multi-line comment boxes allow multiple stakeholders to add notes with timestamps.</li>
+                </ul>
+            </p>
+        </div>
+        
+        <!-- Section 5 -->
+        <div class="section">
+            <div class="section-title">5. ROLES & RESPONSIBILITIES</div>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Vendor Responsibility</th>
+                        <th>Client Responsibility</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Project Sponsor</strong></td>
+                        <td>Provide escalation path</td>
+                        <td>Provide strategic direction, final approval</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Project Manager</strong></td>
+                        <td>Lead daily execution, track timeline, manage scope, communicate status</td>
+                        <td>Provide SME access, review deliverables, approve key decisions</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Business Analyst</strong></td>
+                        <td>Document requirements, analyze gaps</td>
+                        <td>Provide business context, clarify processes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Development Team</strong></td>
+                        <td>Execute all development, migration, and testing tasks</td>
+                        <td>Provide timely feedback on deliverables</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quality Assurance</strong></td>
+                        <td>Develop & execute test plans, log defects</td>
+                        <td>Participate in UAT, report bugs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Subject Matter Experts (SMEs)</strong></td>
+                        <td>--</td>
+                        <td>Provide knowledge on existing system & HubSpot</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Database Administrator</strong></td>
+                        <td>Optimize database performance, implement SP/View changes</td>
+                        <td>Provide database access, approve schema changes</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Section 6 -->
+        <div class="section">
+            <div class="section-title">6. ASSUMPTIONS</div>
+            <ul>
+                <li>Client will provide necessary access (credentials, API keys) to both Nutshell and HubSpot sandbox/production environments.</li>
+                <li>The current Nutshell integration's functional and non-functional requirements are fully documented or discoverable.</li>
+                <li>Client resources will be available for scheduled meetings, reviews, and UAT as outlined in the project plan.</li>
+                <li>No significant changes to the core ERM system or HubSpot subscription will occur during the project.</li>
+                <li>The 11-week timeline includes appropriate buffers for complex API integration and data validation processes.</li>
+            </ul>
+        </div>
+        
+        <!-- Section 7 -->
+        <div class="section">
+            <div class="section-title">7. DEPENDENCIES</div>
+            <ul>
+                <li>Timely provision of HubSpot developer accounts with appropriate permissions.</li>
+                <li>Availability and stability of HubSpot and Nutshell APIs for the duration of the project.</li>
+                <li>Client approval of key deliverables within agreed-upon timeframes to avoid project delays.</li>
+                <li>Access to production database for implementing SP/View updates during Phase 5.</li>
+            </ul>
+        </div>
+        
+        <!-- Section 8 -->
+        <div class="section">
+            <div class="section-title">8. ACCEPTANCE CRITERIA</div>
+            <p>The project will be considered complete upon the successful achievement of the following:</p>
+            <ol>
+                <li>All historical data has been migrated to HubSpot with a verified accuracy rate of 99.5% or higher.</li>
+                <li>All ERM system functions operate correctly using HubSpot as the primary CRM data source.</li>
+                <li>All existing reports generate accurately from the updated SQL Server views/SPs.</li>
+                <li>The data pull mechanism reliably extracts data from HubSpot with proper error handling and logging.</li>
+                <li>A successful UAT period concludes with formal sign-off from the designated client authority.</li>
+                <li>Final project documentation, including operational runbooks and architecture diagrams, has been delivered.</li>
+            </ol>
+        </div>
+        
+        <!-- Section 9 -->
+        <div class="section">
+            <div class="section-title">9. GOVERNANCE & COMMUNICATION</div>
+            <ul>
+                <li><strong>Status Reporting:</strong> Weekly status reports will be issued every Friday, covering progress, risks, issues, and upcoming tasks.</li>
+                <li><strong>Steering Committee:</strong> Bi-weekly checkpoint meetings will be held with project leadership to review progress and address strategic decisions.</li>
+                <li><strong>Issue Escalation:</strong> A defined issue escalation path will be documented and agreed upon at project kickoff.</li>
+                <li><strong>Technical Reviews:</strong> Weekly technical review sessions will be conducted to ensure code quality and architectural alignment.</li>
+                <li><strong>Collaborative Tracking:</strong> Multiple stakeholders can add comments with timestamps for transparent communication.</li>
+            </ul>
+        </div>
+        
+     
+    </div>
+    
+    <!-- JavaScript for Enhanced Features -->
+    <script>
+        // Set current date
+        document.addEventListener('DOMContentLoaded', function() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = now.toLocaleDateString('en-US', options);
+            document.getElementById('current-date').textContent = formattedDate;
+            
+            // Generate Enhanced Gantt chart weeks and timeline
+            generateEnhancedGanttChart();
+            
+            // Add hover tooltips to phases
+            addPhaseTooltips();
+            
+            // Load saved data
+            loadSavedData();
+            
+            // Set up auto-save
+            setupAutoSave();
+            
+            // Update completion statistics
+            updateCompletionStats();
+            
+            // Update schedule analysis
+            updateScheduleAnalysis();
+            
+            // Show today marker on Gantt chart
+            showTodayMarker();
+            
+            // Initialize stakeholder comment forms
+            initializeStakeholderForms();
+        });
+        
+        function generateEnhancedGanttChart() {
+            const startDate = new Date('2026-01-19');
+            const weeksContainer = document.getElementById('gantt-weeks');
+            const gridContainer = document.getElementById('gantt-grid');
+            const timelineBody = document.getElementById('timeline-body');
+            
+            // Clear any existing content
+            weeksContainer.innerHTML = '';
+            gridContainer.innerHTML = '';
+            timelineBody.innerHTML = '';
+            
+            // Phase definitions for 11 weeks
+            const phases = [
+                { 
+                    id: 1,
+                    name: 'Phase 1: Discovery & Planning', 
+                    duration: 2, 
+                    startWeek: 1, 
+                    color: 'var(--phase-1)', 
+                    milestone: 'Approval of Migration Strategy',
+                    description: 'Requirements gathering, gap analysis, strategy formulation'
+                },
+                { 
+                    id: 2,
+                    name: 'Phase 2: Integration Design', 
+                    duration: 1, 
+                    startWeek: 3, 
+                    color: 'var(--phase-2)', 
+                    milestone: 'Sign-off on Technical Design',
+                    description: 'Technical design, API mapping, sync logic design'
+                },
+                { 
+                    id: 3,
+                    name: 'Phase 3: Data Migration', 
+                    duration: 2, 
+                    startWeek: 4, 
+                    color: 'var(--phase-3)', 
+                    milestone: 'Completion of Data Reconciliation',
+                    description: 'Data extraction, transformation, loading, reconciliation'
+                },
+                { 
+                    id: 4,
+                    name: 'Phase 4: Integration Build', 
+                    duration: 1, 
+                    startWeek: 6, 
+                    color: 'var(--phase-4)', 
+                    milestone: 'Code Complete in Dev Environment',
+                    description: 'Core integration build, legacy code decommissioning'
+                },
+                { 
+                    id: 5,
+                    name: 'Phase 5: Database & Reporting Updates', 
+                    duration: 2, 
+                    startWeek: 7, 
+                    color: 'var(--phase-5)', 
+                    milestone: 'Report Validation Complete',
+                    description: 'Database object refactoring, report validation, performance optimization'
+                },
+                { 
+                    id: 6,
+                    name: 'Phase 6: ERM Application Integration & Data Pull', 
+                    duration: 2, 
+                    startWeek: 9, 
+                    color: 'var(--phase-6)', 
+                    milestone: 'Integration Complete',
+                    description: 'ERM feature updates, data pull mechanism development, integration testing'
+                },
+                { 
+                    id: 7,
+                    name: 'Phase 7: Quality Assurance & Deployment', 
+                    duration: 1, 
+                    startWeek: 11, 
+                    color: 'var(--phase-7)', 
+                    milestone: 'Go-Live & Project Sign-off',
+                    description: 'System integration testing, UAT support, production deployment'
+                }
+            ];
+            
+            // Generate week headers and grid cells
+            for (let i = 1; i <= 11; i++) {
+                const weekStart = new Date(startDate);
+                weekStart.setDate(startDate.getDate() + (i - 1) * 7);
+                
+                const weekEnd = new Date(weekStart);
+                weekEnd.setDate(weekStart.getDate() + 6);
+                
+                // Week header
+                const weekDiv = document.createElement('div');
+                weekDiv.className = 'gantt-week';
+                weekDiv.innerHTML = `<div class="week-number">Week ${i}</div>${formatDateShort(weekStart)}`;
+                weeksContainer.appendChild(weekDiv);
+                
+                // Grid cell
+                const gridCell = document.createElement('div');
+                gridCell.className = 'gantt-grid-cell';
+                gridContainer.appendChild(gridCell);
+            }
+            
+            // Generate timeline table rows with enhanced comment functionality
+            phases.forEach((phase, index) => {
+                const phaseStart = new Date(startDate);
+                phaseStart.setDate(startDate.getDate() + (phase.startWeek - 1) * 7);
+                
+                const phaseEnd = new Date(phaseStart);
+                phaseEnd.setDate(phaseStart.getDate() + (phase.duration * 7) - 1);
+                
+                const row = document.createElement('tr');
+                row.id = `phase-${phase.id}-row`;
+                row.innerHTML = `
+                    <td>
+                        <input type="checkbox" class="phase-checkbox" id="phase-${phase.id}-checkbox" data-phase="${phase.id}">
+                    </td>
+                    <td>Phase ${phase.id}</td>
+                    <td>${phase.name.split(': ')[1]}</td>
+                    <td>${formatDateFull(phaseStart)}</td>
+                    <td>${formatDateFull(phaseEnd)}</td>
+                    <td>${phase.duration} week${phase.duration > 1 ? 's' : ''}</td>
+                    <td>${phase.milestone}</td>
+                    <td>
+                        <div class="comment-container">
+                            <textarea class="phase-comment" id="phase-${phase.id}-comment" data-phase="${phase.id}" placeholder="Add comments, notes, or status updates... (Supports multi-line input for multiple stakeholders)"></textarea>
+                            <div class="comment-toolbar">
+                                <div class="comment-info">Press Enter for new line, Ctrl+Enter to save</div>
+                                <div class="comment-actions">
+                                    <button class="comment-action-btn" onclick="addStakeholderComment(${phase.id})">
+                                        <i class="fas fa-user-plus"></i> Add Stakeholder
+                                    </button>
+                                    <button class="comment-action-btn" onclick="clearComment(${phase.id})">
+                                        <i class="fas fa-trash"></i> Clear
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="phase-${phase.id}-timestamp" class="timestamp"></div>
+                            <div id="phase-${phase.id}-schedule-analysis" class="schedule-analysis"></div>
+                            <div id="phase-${phase.id}-stakeholder-form" class="add-stakeholder-form" style="display: none;">
+                                <div class="form-row">
+                                    <input type="text" class="form-input" id="phase-${phase.id}-stakeholder-name" placeholder="Your name">
+                                    <input type="text" class="form-input" id="phase-${phase.id}-stakeholder-role" placeholder="Your role">
+                                </div>
+                                <textarea class="form-textarea" id="phase-${phase.id}-stakeholder-comment" placeholder="Your comment..."></textarea>
+                                <div class="form-actions">
+                                    <button class="comment-action-btn" onclick="cancelStakeholderComment(${phase.id})">Cancel</button>
+                                    <button class="save-btn" style="padding: 4px 12px; font-size: 11px;" onclick="saveStakeholderComment(${phase.id})">Add Comment</button>
+                                </div>
+                            </div>
+                            <div id="phase-${phase.id}-stakeholder-comments"></div>
+                            <div class="comment-save-indicator" id="phase-${phase.id}-save-indicator"></div>
+                        </div>
+                    </td>
+                `;
+                timelineBody.appendChild(row);
+            });
+            
+            // Add current week indicator
+            const today = new Date();
+            const projectStart = new Date('2026-01-19');
+            
+            if (today < projectStart) {
+                // Project hasn't started yet, highlight week 1
+                document.querySelectorAll('.gantt-week')[0].classList.add('current');
+            } else {
+                // Calculate current week
+                const timeDiff = today - projectStart;
+                const weekDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24 * 7)) + 1;
+                
+                if (weekDiff >= 1 && weekDiff <= 11) {
+                    document.querySelectorAll('.gantt-week')[weekDiff - 1].classList.add('current');
+                }
+            }
+        }
+        
+        function formatDateShort(date) {
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return `${months[date.getMonth()]} ${date.getDate()}`;
+        }
+        
+        function formatDateFull(date) {
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+        }
+        
+        function addPhaseTooltips() {
+            const phases = document.querySelectorAll('.gantt-phase');
+            
+            phases.forEach(phase => {
+                // Create tooltip element
+                const tooltip = document.createElement('div');
+                tooltip.className = 'gantt-phase-tooltip';
+                tooltip.innerHTML = `
+                    <div style="font-weight: 700; color: var(--primary-blue); margin-bottom: 5px;">${getPhaseName(phase)}</div>
+                    <div style="margin-bottom: 3px;">Duration: ${phase.querySelector('.phase-duration').textContent}</div>
+                    <div style="font-size: 11px;">${getPhaseDescription(phase)}</div>
+                `;
+                phase.appendChild(tooltip);
+                
+                // Show tooltip on hover
+                phase.addEventListener('mouseenter', function(e) {
+                    tooltip.style.display = 'block';
+                    // Position tooltip above the phase
+                    const rect = phase.getBoundingClientRect();
+                    tooltip.style.top = `-${tooltip.offsetHeight + 10}px`;
+                });
+                
+                phase.addEventListener('mouseleave', function() {
+                    tooltip.style.display = 'none';
+                });
+            });
+        }
+        
+        function getPhaseName(phaseElement) {
+            const phaseNum = phaseElement.getAttribute('data-phase');
+            const phaseNames = {
+                '1': 'Phase 1: Discovery & Planning',
+                '2': 'Phase 2: Integration Design',
+                '3': 'Phase 3: Data Migration',
+                '4': 'Phase 4: Integration Build',
+                '5': 'Phase 5: Database & Reporting',
+                '6': 'Phase 6: ERM & Data Pull',
+                '7': 'Phase 7: QA & Deployment'
+            };
+            return phaseNames[phaseNum] || 'Phase';
+        }
+        
+        function getPhaseDescription(phaseElement) {
+            const phaseNum = phaseElement.getAttribute('data-phase');
+            const phaseDescriptions = {
+                '1': 'Requirements gathering, gap analysis, and migration strategy formulation',
+                '2': 'Technical design, API endpoint mapping, and synchronization logic design',
+                '3': 'Historical data extraction, transformation, loading, and reconciliation',
+                '4': 'Core integration build and legacy code decommissioning',
+                '5': 'Database object refactoring and report validation',
+                '6': 'ERM application updates and data pull mechanism development',
+                '7': 'System integration testing, UAT, and production deployment'
+            };
+            return phaseDescriptions[phaseNum] || '';
+        }
+        
+        // Enhanced data saving and loading functions
+        function savePhaseData(phaseId) {
+            const checkbox = document.getElementById(`phase-${phaseId}-checkbox`);
+            const comment = document.getElementById(`phase-${phaseId}-comment`);
+            const row = document.getElementById(`phase-${phaseId}-row`);
+            const ganttBar = document.getElementById(`gantt-phase-${phaseId}`);
+            const timestampEl = document.getElementById(`phase-${phaseId}-timestamp`);
+            const scheduleAnalysisEl = document.getElementById(`phase-${phaseId}-schedule-analysis`);
+            
+            const data = {
+                checked: checkbox.checked,
+                comment: comment.value,
+                timestamp: checkbox.checked ? new Date().toISOString() : null,
+                stakeholderComments: getStakeholderComments(phaseId)
+            };
+            
+            // Save to localStorage
+            localStorage.setItem(`phase-${phaseId}`, JSON.stringify(data));
+            
+            // Update row styling
+            if (checkbox.checked) {
+                row.classList.add('completed-phase');
+            } else {
+                row.classList.remove('completed-phase');
+            }
+            
+            // Update Gantt chart bar styling
+            if (checkbox.checked && ganttBar) {
+                ganttBar.classList.add('completed-phase-bar');
+            } else if (ganttBar) {
+                ganttBar.classList.remove('completed-phase-bar');
+            }
+            
+            // Update timestamp display
+            if (checkbox.checked && data.timestamp) {
+                const completionDate = new Date(data.timestamp);
+                timestampEl.innerHTML = `<i class="fas fa-calendar-check"></i> Marked complete on: ${completionDate.toLocaleString()}`;
+                timestampEl.style.display = 'block';
+                
+                // Calculate schedule analysis
+                const plannedEndDate = getPlannedEndDate(phaseId);
+                const daysDiff = calculateDaysDifference(completionDate, plannedEndDate);
+                
+                let scheduleStatus = '';
+                if (daysDiff < 0) {
+                    scheduleStatus = `<span class="schedule-status schedule-ahead">AHEAD</span> Completed ${Math.abs(daysDiff)} day${Math.abs(daysDiff) === 1 ? '' : 's'} early`;
+                } else if (daysDiff > 0) {
+                    scheduleStatus = `<span class="schedule-status schedule-delayed">DELAYED</span> Completed ${daysDiff} day${daysDiff === 1 ? '' : 's'} late`;
+                } else {
+                    scheduleStatus = `<span class="schedule-status schedule-ontrack">ON TIME</span> Completed exactly on planned date`;
+                }
+                
+                scheduleAnalysisEl.innerHTML = `<i class="fas fa-chart-line"></i> ${scheduleStatus}`;
+                scheduleAnalysisEl.style.display = 'block';
+            } else {
+                timestampEl.style.display = 'none';
+                scheduleAnalysisEl.style.display = 'none';
+            }
+            
+            // Show save indicator
+            const saveIndicator = document.getElementById(`phase-${phaseId}-save-indicator`);
+            saveIndicator.textContent = 'Saved';
+            saveIndicator.style.display = 'block';
+            
+            setTimeout(() => {
+                saveIndicator.style.display = 'none';
+            }, 2000);
+            
+            updateSaveStatus();
+            updateCompletionStats();
+            updateScheduleAnalysis();
+        }
+        
+        function loadSavedData() {
+            for (let i = 1; i <= 7; i++) {
+                const savedData = localStorage.getItem(`phase-${i}`);
+                
+                if (savedData) {
+                    try {
+                        const data = JSON.parse(savedData);
+                        const checkbox = document.getElementById(`phase-${i}-checkbox`);
+                        const comment = document.getElementById(`phase-${i}-comment`);
+                        const row = document.getElementById(`phase-${i}-row`);
+                        const ganttBar = document.getElementById(`gantt-phase-${i}`);
+                        const timestampEl = document.getElementById(`phase-${i}-timestamp`);
+                        const scheduleAnalysisEl = document.getElementById(`phase-${i}-schedule-analysis`);
+                        const stakeholderCommentsEl = document.getElementById(`phase-${i}-stakeholder-comments`);
+                        
+                        if (checkbox && comment && row) {
+                            checkbox.checked = data.checked || false;
+                            comment.value = data.comment || '';
+                            
+                            // Update row styling
+                            if (checkbox.checked) {
+                                row.classList.add('completed-phase');
+                            } else {
+                                row.classList.remove('completed-phase');
+                            }
+                            
+                            // Update Gantt chart bar styling
+                            if (checkbox.checked && ganttBar) {
+                                ganttBar.classList.add('completed-phase-bar');
+                            } else if (ganttBar) {
+                                ganttBar.classList.remove('completed-phase-bar');
+                            }
+                            
+                            // Update timestamp display
+                            if (checkbox.checked && data.timestamp) {
+                                const completionDate = new Date(data.timestamp);
+                                timestampEl.innerHTML = `<i class="fas fa-calendar-check"></i> Marked complete on: ${completionDate.toLocaleString()}`;
+                                timestampEl.style.display = 'block';
+                                
+                                // Calculate schedule analysis
+                                const plannedEndDate = getPlannedEndDate(i);
+                                const daysDiff = calculateDaysDifference(completionDate, plannedEndDate);
+                                
+                                let scheduleStatus = '';
+                                if (daysDiff < 0) {
+                                    scheduleStatus = `<span class="schedule-status schedule-ahead">AHEAD</span> Completed ${Math.abs(daysDiff)} day${Math.abs(daysDiff) === 1 ? '' : 's'} early`;
+                                } else if (daysDiff > 0) {
+                                    scheduleStatus = `<span class="schedule-status schedule-delayed">DELAYED</span> Completed ${daysDiff} day${daysDiff === 1 ? '' : 's'} late`;
+                                } else {
+                                    scheduleStatus = `<span class="schedule-status schedule-ontrack">ON TIME</span> Completed exactly on planned date`;
+                                }
+                                
+                                scheduleAnalysisEl.innerHTML = `<i class="fas fa-chart-line"></i> ${scheduleStatus}`;
+                                scheduleAnalysisEl.style.display = 'block';
+                            }
+                            
+                            // Load stakeholder comments
+                            if (data.stakeholderComments && stakeholderCommentsEl) {
+                                stakeholderCommentsEl.innerHTML = '';
+                                data.stakeholderComments.forEach(comment => {
+                                    const commentEl = document.createElement('div');
+                                    commentEl.className = 'stakeholder-entry';
+                                    commentEl.innerHTML = `
+                                        <div class="stakeholder-header">
+                                            <span class="stakeholder-name">${comment.name} (${comment.role})</span>
+                                            <span class="stakeholder-date">${new Date(comment.timestamp).toLocaleString()}</span>
+                                        </div>
+                                        <div class="stakeholder-text">${comment.text}</div>
+                                    `;
+                                    stakeholderCommentsEl.appendChild(commentEl);
+                                });
+                            }
+                        }
+                    } catch (e) {
+                        console.error('Error loading saved data for phase', i, e);
+                    }
+                }
+            }
+            
+            updateSaveStatus();
+            updateCompletionStats();
+            updateScheduleAnalysis();
+        }
+        
+        function saveAllData() {
+            for (let i = 1; i <= 7; i++) {
+                savePhaseData(i);
+            }
+            
+            // Show success message
+            const saveStatusBar = document.getElementById('save-status-bar');
+            const originalText = saveStatusBar.textContent;
+            saveStatusBar.textContent = 'All data saved successfully!';
+            saveStatusBar.classList.add('saved');
+            
+            setTimeout(() => {
+                saveStatusBar.textContent = originalText;
+                saveStatusBar.classList.remove('saved');
+            }, 3000);
+            
+            updateCompletionStats();
+            updateScheduleAnalysis();
+        }
+        
+        function resetAllData() {
+            if (confirm('Are you sure you want to reset all checkboxes, comments, and stakeholder entries? This cannot be undone.')) {
+                for (let i = 1; i <= 7; i++) {
+                    const checkbox = document.getElementById(`phase-${i}-checkbox`);
+                    const comment = document.getElementById(`phase-${i}-comment`);
+                    const row = document.getElementById(`phase-${i}-row`);
+                    const ganttBar = document.getElementById(`gantt-phase-${i}`);
+                    const timestampEl = document.getElementById(`phase-${i}-timestamp`);
+                    const scheduleAnalysisEl = document.getElementById(`phase-${i}-schedule-analysis`);
+                    const stakeholderCommentsEl = document.getElementById(`phase-${i}-stakeholder-comments`);
+                    
+                    if (checkbox && comment && row) {
+                        checkbox.checked = false;
+                        comment.value = '';
+                        row.classList.remove('completed-phase');
+                        
+                        if (ganttBar) ganttBar.classList.remove('completed-phase-bar');
+                        if (timestampEl) timestampEl.style.display = 'none';
+                        if (scheduleAnalysisEl) scheduleAnalysisEl.style.display = 'none';
+                        if (stakeholderCommentsEl) stakeholderCommentsEl.innerHTML = '';
+                    }
+                    
+                    // Remove from localStorage
+                    localStorage.removeItem(`phase-${i}`);
+                }
+                
+                // Show reset message
+                const saveStatusBar = document.getElementById('save-status-bar');
+                const originalText = saveStatusBar.textContent;
+                saveStatusBar.textContent = 'All data reset successfully!';
+                saveStatusBar.classList.add('saved');
+                
+                setTimeout(() => {
+                    saveStatusBar.textContent = 'Data will auto-save as you type';
+                    saveStatusBar.classList.remove('saved');
+                }, 3000);
+                
+                updateSaveStatus();
+                updateCompletionStats();
+                updateScheduleAnalysis();
+            }
+        }
+        
+        function setupAutoSave() {
+            // Add event listeners to checkboxes
+            for (let i = 1; i <= 7; i++) {
+                const checkbox = document.getElementById(`phase-${i}-checkbox`);
+                const comment = document.getElementById(`phase-${i}-comment`);
+                
+                if (checkbox) {
+                    checkbox.addEventListener('change', function() {
+                        savePhaseData(i);
+                    });
+                }
+                
+                if (comment) {
+                    // Save on blur (when user leaves the field)
+                    comment.addEventListener('blur', function() {
+                        savePhaseData(i);
+                    });
+                    
+                    // Save on Ctrl+Enter key press
+                    comment.addEventListener('keydown', function(e) {
+                        if (e.ctrlKey && e.key === 'Enter') {
+                            savePhaseData(i);
+                            comment.blur(); // Remove focus
+                        }
+                    });
+                }
+            }
+        }
+        
+        function updateSaveStatus() {
+            let hasData = false;
+            
+            for (let i = 1; i <= 7; i++) {
+                const savedData = localStorage.getItem(`phase-${i}`);
+                if (savedData) {
+                    hasData = true;
+                    break;
+                }
+            }
+            
+            const saveStatus = document.getElementById('save-status');
+            if (hasData) {
+                saveStatus.textContent = 'Data saved locally';
+                saveStatus.classList.add('saved');
+            } else {
+                saveStatus.textContent = 'No saved data';
+                saveStatus.classList.remove('saved');
+            }
+        }
+        
+        function updateCompletionStats() {
+            let completedCount = 0;
+            
+            for (let i = 1; i <= 7; i++) {
+                const checkbox = document.getElementById(`phase-${i}-checkbox`);
+                if (checkbox && checkbox.checked) {
+                    completedCount++;
+                }
+            }
+            
+            const totalPhases = 7;
+            const remainingCount = totalPhases - completedCount;
+            const progressPercentage = Math.round((completedCount / totalPhases) * 100);
+            
+            // Update statistics display
+            document.getElementById('completed-count').textContent = completedCount;
+            document.getElementById('remaining-count').textContent = remainingCount;
+            document.getElementById('progress-percentage').textContent = `${progressPercentage}%`;
+            document.getElementById('completed-phases-count').textContent = `${completedCount}/${totalPhases}`;
+            document.getElementById('completed-phases-detail').textContent = `${progressPercentage}% of total phases`;
+            
+            // Update progress bar
+            const progressFill = document.getElementById('progress-fill');
+            progressFill.style.width = `${progressPercentage}%`;
+            
+            // Update progress bar color based on completion
+            if (progressPercentage === 100) {
+                progressFill.style.backgroundColor = '#38a169';
+            } else if (progressPercentage >= 50) {
+                progressFill.style.backgroundColor = '#48bb78';
+            } else {
+                progressFill.style.backgroundColor = '#68d391';
+            }
+        }
+        
+        function updateScheduleAnalysis() {
+            let aheadCount = 0;
+            let delayedCount = 0;
+            let ontrackCount = 0;
+            let overallStatus = "On Track";
+            
+            for (let i = 1; i <= 7; i++) {
+                const checkbox = document.getElementById(`phase-${i}-checkbox`);
+                const savedData = localStorage.getItem(`phase-${i}`);
+                
+                if (checkbox && checkbox.checked && savedData) {
+                    try {
+                        const data = JSON.parse(savedData);
+                        if (data.timestamp) {
+                            const completionDate = new Date(data.timestamp);
+                            const plannedEndDate = getPlannedEndDate(i);
+                            const daysDiff = calculateDaysDifference(completionDate, plannedEndDate);
+                            
+                            if (daysDiff < 0) {
+                                aheadCount++;
+                            } else if (daysDiff > 0) {
+                                delayedCount++;
+                            } else {
+                                ontrackCount++;
+                            }
+                        }
+                    } catch (e) {
+                        console.error('Error analyzing schedule for phase', i, e);
+                    }
+                }
+            }
+            
+            // Determine overall status
+            if (delayedCount > aheadCount) {
+                overallStatus = "Delayed";
+            } else if (aheadCount > delayedCount) {
+                overallStatus = "Ahead of Schedule";
+            } else {
+                overallStatus = "On Track";
+            }
+            
+            // Update analysis panel
+            document.getElementById('ahead-count').textContent = aheadCount;
+            document.getElementById('delayed-count').textContent = delayedCount;
+            
+            const overallStatusEl = document.getElementById('overall-status');
+            overallStatusEl.textContent = overallStatus;
+            overallStatusEl.className = 'metric-value ';
+            
+            if (overallStatus === "Ahead of Schedule") {
+                overallStatusEl.classList.add('ahead');
+            } else if (overallStatus === "Delayed") {
+                overallStatusEl.classList.add('delayed');
+            } else {
+                overallStatusEl.classList.add('ontrack');
+            }
+            
+            const overallDetail = document.getElementById('overall-detail');
+            if (aheadCount > 0 || delayedCount > 0) {
+                let details = [];
+                if (aheadCount > 0) details.push(`${aheadCount} phase${aheadCount === 1 ? '' : 's'} ahead`);
+                if (delayedCount > 0) details.push(`${delayedCount} phase${delayedCount === 1 ? '' : 's'} delayed`);
+                if (ontrackCount > 0) details.push(`${ontrackCount} phase${ontrackCount === 1 ? '' : 's'} on track`);
+                overallDetail.textContent = details.join(', ');
+            } else {
+                overallDetail.textContent = 'Based on completed phases vs. planned dates';
+            }
+        }
+        
+        function getPlannedEndDate(phaseId) {
+            const row = document.getElementById(`phase-${phaseId}-row`);
+            if (row && row.cells[4]) {
+                const dateStr = row.cells[4].textContent;
+                return new Date(dateStr);
+            }
+            return new Date();
+        }
+        
+        function calculateDaysDifference(date1, date2) {
+            // Calculate difference in days
+            const diffTime = date1 - date2;
+            return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        }
+        
+        function showTodayMarker() {
+            const projectStart = new Date('2026-01-19');
+            const today = new Date();
+            
+            // Only show marker if today is within project timeline
+            if (today >= projectStart) {
+                const timeDiff = today - projectStart;
+                const dayDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                const weekDiff = Math.floor(dayDiff / 7);
+                const dayInWeek = dayDiff % 7;
+                
+                // Calculate position (0-11 weeks, each 9.09% width)
+                const weekWidth = 9.09; // percentage
+                const dayWidth = weekWidth / 7;
+                const position = (weekDiff * weekWidth) + (dayInWeek * dayWidth);
+                
+                const marker = document.getElementById('today-marker');
+                const label = document.getElementById('today-label');
+                
+                if (position >= 0 && position <= 100) {
+                    marker.style.left = `${position}%`;
+                    marker.style.display = 'block';
+                    
+                    label.style.left = `${position}%`;
+                    label.style.display = 'block';
+                }
+            }
+        }
+        
+        function initializeStakeholderForms() {
+            // Add event listeners for comment boxes
+            for (let i = 1; i <= 7; i++) {
+                const commentBox = document.getElementById(`phase-${i}-comment`);
+                if (commentBox) {
+                    commentBox.addEventListener('keydown', function(e) {
+                        // Allow Tab key for indentation
+                        if (e.key === 'Tab') {
+                            e.preventDefault();
+                            const start = this.selectionStart;
+                            const end = this.selectionEnd;
+                            
+                            // Insert tab character
+                            this.value = this.value.substring(0, start) + '\t' + this.value.substring(end);
+                            
+                            // Move cursor position
+                            this.selectionStart = this.selectionEnd = start + 1;
+                        }
+                    });
+                }
+            }
+        }
+        
+        function addStakeholderComment(phaseId) {
+            const form = document.getElementById(`phase-${phaseId}-stakeholder-form`);
+            form.style.display = 'block';
+            
+            // Focus on name field
+            const nameField = document.getElementById(`phase-${phaseId}-stakeholder-name`);
+            if (nameField) nameField.focus();
+        }
+        
+        function cancelStakeholderComment(phaseId) {
+            const form = document.getElementById(`phase-${phaseId}-stakeholder-form`);
+            form.style.display = 'none';
+            
+            // Clear form fields
+            document.getElementById(`phase-${phaseId}-stakeholder-name`).value = '';
+            document.getElementById(`phase-${phaseId}-stakeholder-role`).value = '';
+            document.getElementById(`phase-${phaseId}-stakeholder-comment`).value = '';
+        }
+        
+        function saveStakeholderComment(phaseId) {
+            const name = document.getElementById(`phase-${phaseId}-stakeholder-name`).value.trim();
+            const role = document.getElementById(`phase-${phaseId}-stakeholder-role`).value.trim();
+            const text = document.getElementById(`phase-${phaseId}-stakeholder-comment`).value.trim();
+            
+            if (!name || !text) {
+                alert('Please enter your name and comment');
+                return;
+            }
+            
+            // Get existing stakeholder comments
+            const savedData = localStorage.getItem(`phase-${phaseId}`);
+            let data = savedData ? JSON.parse(savedData) : { stakeholderComments: [] };
+            
+            if (!data.stakeholderComments) {
+                data.stakeholderComments = [];
+            }
+            
+            // Add new comment
+            data.stakeholderComments.push({
+                name: name,
+                role: role || 'Stakeholder',
+                text: text,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Save to localStorage
+            localStorage.setItem(`phase-${phaseId}`, JSON.stringify(data));
+            
+            // Update display
+            const stakeholderCommentsEl = document.getElementById(`phase-${phaseId}-stakeholder-comments`);
+            const commentEl = document.createElement('div');
+            commentEl.className = 'stakeholder-entry';
+            commentEl.innerHTML = `
+                <div class="stakeholder-header">
+                    <span class="stakeholder-name">${name} (${role || 'Stakeholder'})</span>
+                    <span class="stakeholder-date">${new Date().toLocaleString()}</span>
+                </div>
+                <div class="stakeholder-text">${text}</div>
+            `;
+            stakeholderCommentsEl.appendChild(commentEl);
+            
+            // Clear form and hide
+            cancelStakeholderComment(phaseId);
+            
+            // Show success message
+            const saveIndicator = document.getElementById(`phase-${phaseId}-save-indicator`);
+            saveIndicator.textContent = 'Stakeholder comment added';
+            saveIndicator.style.display = 'block';
+            
+            setTimeout(() => {
+                saveIndicator.style.display = 'none';
+            }, 2000);
+        }
+        
+        function getStakeholderComments(phaseId) {
+            const savedData = localStorage.getItem(`phase-${phaseId}`);
+            if (savedData) {
+                try {
+                    const data = JSON.parse(savedData);
+                    return data.stakeholderComments || [];
+                } catch (e) {
+                    console.error('Error parsing stakeholder comments for phase', phaseId, e);
+                }
+            }
+            return [];
+        }
+        
+        function clearComment(phaseId) {
+            if (confirm('Clear all comments and stakeholder entries for this phase?')) {
+                const commentBox = document.getElementById(`phase-${phaseId}-comment`);
+                const stakeholderCommentsEl = document.getElementById(`phase-${phaseId}-stakeholder-comments`);
+                
+                if (commentBox) commentBox.value = '';
+                if (stakeholderCommentsEl) stakeholderCommentsEl.innerHTML = '';
+                
+                // Remove stakeholder comments from saved data
+                const savedData = localStorage.getItem(`phase-${phaseId}`);
+                if (savedData) {
+                    try {
+                        const data = JSON.parse(savedData);
+                        data.stakeholderComments = [];
+                        localStorage.setItem(`phase-${phaseId}`, JSON.stringify(data));
+                    } catch (e) {
+                        console.error('Error clearing comments for phase', phaseId, e);
+                    }
+                }
+                
+                // Show confirmation
+                const saveIndicator = document.getElementById(`phase-${phaseId}-save-indicator`);
+                saveIndicator.textContent = 'Comments cleared';
+                saveIndicator.style.display = 'block';
+                
+                setTimeout(() => {
+                    saveIndicator.style.display = 'none';
+                }, 2000);
+            }
+        }
+        
+        // Initialize save status and completion stats
+        updateSaveStatus();
+        updateCompletionStats();
+    </script>
+</body>
+</html>
